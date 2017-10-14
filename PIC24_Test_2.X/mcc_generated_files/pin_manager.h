@@ -55,6 +55,152 @@
 */
 /**
   @Summary
+    Sets the GPIO pin, RB9, high using LATB9.
+
+  @Description
+    Sets the GPIO pin, RB9, high using LATB9.
+
+  @Preconditions
+    The RB9 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB9 high (1)
+    test_io_SetHigh();
+    </code>
+
+*/
+#define test_io_SetHigh()          _LATB9 = 1
+/**
+  @Summary
+    Sets the GPIO pin, RB9, low using LATB9.
+
+  @Description
+    Sets the GPIO pin, RB9, low using LATB9.
+
+  @Preconditions
+    The RB9 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Set RB9 low (0)
+    test_io_SetLow();
+    </code>
+
+*/
+#define test_io_SetLow()           _LATB9 = 0
+/**
+  @Summary
+    Toggles the GPIO pin, RB9, using LATB9.
+
+  @Description
+    Toggles the GPIO pin, RB9, using LATB9.
+
+  @Preconditions
+    The RB9 must be set to an output.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Toggle RB9
+    test_io_Toggle();
+    </code>
+
+*/
+#define test_io_Toggle()           _LATB9 ^= 1
+/**
+  @Summary
+    Reads the value of the GPIO pin, RB9.
+
+  @Description
+    Reads the value of the GPIO pin, RB9.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    uint16_t portValue;
+
+    // Read RB9
+    postValue = test_io_GetValue();
+    </code>
+
+*/
+#define test_io_GetValue()         _RB9
+/**
+  @Summary
+    Configures the GPIO pin, RB9, as an input.
+
+  @Description
+    Configures the GPIO pin, RB9, as an input.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB9 as an input
+    test_io_SetDigitalInput();
+    </code>
+
+*/
+#define test_io_SetDigitalInput()  _TRISB9 = 1
+/**
+  @Summary
+    Configures the GPIO pin, RB9, as an output.
+
+  @Description
+    Configures the GPIO pin, RB9, as an output.
+
+  @Preconditions
+    None.
+
+  @Returns
+    None.
+
+  @Param
+    None.
+
+  @Example
+    <code>
+    // Sets the RB9 as an output
+    test_io_SetDigitalOutput();
+    </code>
+
+*/
+#define test_io_SetDigitalOutput() _TRISB9 = 0
+/**
+  @Summary
     Sets the GPIO pin, RC5, high using LATC5.
 
   @Description
