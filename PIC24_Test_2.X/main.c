@@ -44,7 +44,7 @@
 
 #include "mcc_generated_files/mcc.h"
 //#define DELAY 16000  //Timer1 Delay
-#define DELAY 0x186A    //Alt timer delay (hopefully 1 second, need to check)
+#define DELAY 19760    //Alt timer delay (hopefully 1.235 ms, need to check)
 
 void testFunction(void);
 void buttonLedFunction(void);
@@ -65,17 +65,17 @@ int main(void)
     SYSTEM_Initialize();
     //T1CON = 0x8030; // 0b10000000_00110000 TMR1 on, prescaler 1:256 Tclk/2
     //T1CON = 0x8000; // 0b10000000_00000000 TMR1 on, prescaler 1:1 Tclk/2
-    T1CON = 0x8020; // 0b10000000_00000000 TMR1 on, prescaler 1:64 Tclk/2
+    //T1CON = 0x8020; // 0b10000000_00000000 TMR1 on, prescaler 1:64 Tclk/2
     
-    
-    
+    interruptBookTest();
+   
     while (1)
     {
         
         //testFunction();
         //buttonLedFunction();
         //interruptTimerTest();
-        interruptBookTest();
+        //interruptBookTest();
     }
 
     return -1;
@@ -87,13 +87,16 @@ void testFunction(void)
 {
     while(1)
     {
+        
+    LED_GREEN_SetHigh();
     _LATB9 = 1;
     TMR1 = 0;
     while(TMR1 < DELAY)
     {
             
     }
-        
+    
+    LED_GREEN_SetLow();
     _LATB9 = 0;
     TMR1 = 0;
     while(TMR1 < DELAY)
@@ -171,8 +174,8 @@ void interruptTimerTest(void)
 {
     _T1IP = 4; // this is the default value anyway
     TMR1 = 0; // clear the timer
-    PR1 = 25000-1; // set the period register, 25,000 * 64 * 1 cycle (62.5ns) = 0.1 s
-    T1CON = 0x8020; // enabled, prescaler 1:64, internal clock 
+    PR1 = 0x4D2F; // set the period register, 25,000 * 64 * 1 cycle (62.5ns) = 0.1 s
+    T1CON = 0x8000; // enabled, prescaler 1:64, internal clock 
     
     // 2.2 init the Timer 1 Interrupt, clear the flag, enable the source
     _T1IF = 0;
@@ -184,47 +187,50 @@ void interruptTimerTest(void)
 
 void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void)  
 {
- // 1.1 your code here
- dSec++; // increment the tens of a second counter
- if ( dSec > 9) // 10 tens in a second
- {
- dSec = 0;
- Sec++; // increment the minute counter
-
- if ( Sec > 59) // 60 seconds make a minute
- {
- Sec = 0;
-
- // 1.2 increment the minute counter
- Min++;
- if ( Min > 59)// 59 minutes in an hour
- Min = 0;
- } // minutes
- } // seconds
- // 1.3 clear the interrupt flag
+// // 1.1 your code here
+// dSec++; // increment the tens of a second counter
+// if ( dSec > 9) // 10 tens in a second
+// {
+// dSec = 0;
+// Sec++; // increment the minute counter
+//
+// if ( Sec > 59) // 60 seconds make a minute
+// {
+// Sec = 0;
+//
+// // 1.2 increment the minute counter
+// Min++;
+// if ( Min > 59)// 59 minutes in an hour
+// Min = 0;
+// } // minutes
+// } // seconds
+// // 1.3 clear the interrupt flag
+ _LATB9 = !_LATB9;
+ _LATC7 = !_LATC7;
  _T1IF = 0;
 }
 
 void interruptBookTest(void)
 {
     // 2. init Timer 1, T1ON, 1:1 prescaler, internal clock source
- _T1IP = 4; // this is the default value anyway
+ _T1IP = 1; // this is the default value anyway
  TMR1 = 0; // clear the timer
- PR1 = 25000-1; // set the period register
- TRISA = 0xff00; // set PORTA lsb as output
+ PR1 = 19760-1; // set the period register
+ //TRISA = 0xff00; // set PORTA lsb as output
  // 2.1 configure Timer1 module
- T1CON = 0x8020; // enabled, prescaler 1:64, internal clock
+ T1CON = 0x8000; // enabled, prescaler 1:1, internal clock
  // 2.2 init the Timer 1 Interrupt, clear the flag, enable the source
  _T1IF = 0;
  _T1IE = 1;
  // 2.3 init the processor priority level
  
  // 3. main loop
- 
- while( 1)
+ _LATB9 = 1;
+ _LATC7 = 0;
+ while(1)
  {
  // your main code here
- _LATB9 = 0;
+ 
 
  } // main loop
 }
