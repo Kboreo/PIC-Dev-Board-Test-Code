@@ -51,6 +51,8 @@ void buttonLedFunction(void);
 void interruptTimerTest(void);
 void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void);
 void interruptBookTest(void);
+void tmr2Test(void);
+
 
 int dSec = 0;
 int Sec = 0;
@@ -67,15 +69,12 @@ int main(void)
     //T1CON = 0x8000; // 0b10000000_00000000 TMR1 on, prescaler 1:1 Tclk/2
     //T1CON = 0x8020; // 0b10000000_00000000 TMR1 on, prescaler 1:64 Tclk/2
     
-    interruptBookTest();
+    //interruptBookTest();
+    tmr2Test();
    
     while (1)
     {
         
-        //testFunction();
-        //buttonLedFunction();
-        //interruptTimerTest();
-        //interruptBookTest();
     }
 
     return -1;
@@ -93,7 +92,7 @@ void testFunction(void)
     TMR1 = 0;
     while(TMR1 < DELAY)
     {
-            
+        
     }
     
     LED_GREEN_SetLow();
@@ -234,6 +233,21 @@ void interruptBookTest(void)
 
  } // main loop
 }
+
+
+tmr2Test(void)
+{
+    _T2IP = 2;
+    PR2 = 0x13880-1;
+    T2CON =0x0;
+    TMR2 = 0;       //Clear timer 2
+    
+    while(1)
+    {
+        
+    }
+}
+
 /**
  End of File
 */
