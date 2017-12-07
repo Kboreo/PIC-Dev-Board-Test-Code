@@ -50,6 +50,7 @@ void testFunction(void);
 void buttonLedFunction(void);
 void interruptTimerTest(void);
 void __attribute__((__interrupt__, __auto_psv__)) _T1Interrupt(void);
+void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void);
 void interruptBookTest(void);
 void tmr2Test(void);
 
@@ -235,17 +236,31 @@ void interruptBookTest(void)
 }
 
 
-tmr2Test(void)
-{
-    _T2IP = 2;
-    PR2 = 0x13880-1;
-    T2CON =0x0;
+void tmr2Test(void)
+{    
+    TMR3 = 0x0000;  //Clear timer 3
+    //PR3 = 0x0001;   //Period for most significant word of (time) 5ms timer
+    PR3 = 0x04C4;   //Period for most significant word of (time) 5s timer
     TMR2 = 0;       //Clear timer 2
+    _T3IP = 2;      //Priority bit for timer
+    //PR2 = 0x3880-1; //Period for least significant word of (time) 5ms timer
+    PR2 = 0xB400-1;     //Period for least significant word of (time) 5s timer
+    T2CON = 0x8008; //TCKPS 1:1; T32 32 Bit; TON enabled; TSIDL disabled; TCS FOSC/2; TECS SOSC; TGATE disabled; 
+    _T3IF = 0;  //Clear interrupt flag
+    _T3IE = 1;  //Enable clock source
+    
+     _LATB9 = 1;
     
     while(1)
     {
         
     }
+}
+
+void __attribute__((__interrupt__, __auto_psv__)) _T3Interrupt(void)  
+{
+    _LATB9 = !_LATB9;
+    _T3IF = 0;
 }
 
 /**

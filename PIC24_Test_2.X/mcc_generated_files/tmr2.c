@@ -105,22 +105,22 @@ void TMR2_Initialize (void)
 }
 
 
-void __attribute__ ( ( interrupt, no_auto_psv ) ) _T3Interrupt (  )
-{
-    /* Check if the Timer Interrupt/Status is set */
-
-    //***User Area Begin
-
-    // ticker function call;
-    // ticker is 1 -> Callback function gets called everytime this ISR executes
-    TMR2_CallBack();
-
-    //***User Area End
-
-    tmr2_obj.count++;
-    tmr2_obj.timerElapsed = true;
-    IFS0bits.T3IF = false;
-}
+//void __attribute__ ( ( interrupt, no_auto_psv ) ) _T3Interrupt (  )
+////{
+//    /* Check if the Timer Interrupt/Status is set */
+//
+//    //***User Area Begin
+//
+//    // ticker function call;
+//    // ticker is 1 -> Callback function gets called everytime this ISR executes
+//    TMR2_CallBack();
+//
+//    //***User Area End
+//
+//    tmr2_obj.count++;
+//    tmr2_obj.timerElapsed = true;
+//    IFS0bits.T3IF = false;
+//}
 
 
 
